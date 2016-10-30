@@ -24,15 +24,6 @@ RUN ./configure && make release \
 # Setup CouchDB permissions and defaults
 WORKDIR /couchdb
 RUN sed -i'' 's/bind_address = 127.0.0.1/bind_address = 0.0.0.0/' etc/default.ini
-RUN adduser --system \
-        --home /couchdb \
-        --no-create-home \
-       --group --gecos \
-        "CouchDB Administrator" couchdb
-RUN chown -R couchdb:couchdb /couchdb \
- && find /couchdb -type d -exec chmod 0770 {} \; \
- && chmod 0644 /couchdb/etc/*
 
-USER couchdb
 EXPOSE 5984
 ENTRYPOINT ["/couchdb/bin/couchdb"]
